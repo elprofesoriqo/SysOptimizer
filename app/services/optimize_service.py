@@ -21,3 +21,16 @@ def optimize_cpu():
             proc.terminate()
             high_cpu_processes.append(proc.info)
     return high_cpu_processes
+
+
+import subprocess
+import json
+
+def monitor_processes():
+    try:
+        subprocess.run(["modules/sys_monitor.exe"], check=True)
+        with open("processes.json", "r") as file:
+            result = json.load(file)
+        return result
+    except Exception as e:
+        return {"status": "error", "message": str(e)}

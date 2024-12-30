@@ -20,16 +20,15 @@ def analyze_files():
             ).dict())
     return temp_files
 
-def clean_files():
-    """
-    Usuwa wskazane pliki.
-    """
-    files_to_remove = analyze_files()  # W tym przykładzie usuwamy wszystkie
-    removed_files = []
-    for file in files_to_remove:
-        try:
-            os.remove(file["path"])
-            removed_files.append(file["path"])
-        except Exception as e:
-            continue
-    return removed_files
+import subprocess
+import json
+
+def clean_temp_files():
+    try:
+        subprocess.run(["modules/sys_cleaner.exe"], check=True)
+        with open("clean_report.json", "r") as file:
+            result = json.load(file)
+        return result
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
